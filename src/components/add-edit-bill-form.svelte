@@ -3,11 +3,13 @@
 
   function handleSubmit(e: any) {
     bills.update((billsStore) => {
-      console.log('currentStore: ', billsStore);
-      const newCard = { name: e.target.billName.value, amount: e.target.billAmount.value };
+      const inputAmount: number = parseInt(e.target.billAmount.value);
+      const newTotal: number = billsStore.remainingBalance + inputAmount;
+      const newCard = { name: e.target.billName.value, amount: inputAmount };
       const updatedBillsList = [...billsStore.billsList, newCard];
-      return { ...billsStore, billsList: updatedBillsList };
+      return { ...billsStore, remainingBalance: newTotal, billsList: updatedBillsList };
     });
+    console.log('currentStore: ', $bills);
   }
 </script>
 
