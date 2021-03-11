@@ -1,11 +1,15 @@
 <script>
+  import { Button, Card, CardActions, CardText, TextField } from 'svelte-materialify';
   import { bills } from '../stores/billsStore';
 
-  function handleSubmit(e: any) {
+  let billName: string;
+  let billAmount: string;
+
+  function handleSubmit() {
     bills.update((billsStore) => {
-      const inputAmount: number = parseInt(e.target.billAmount.value);
-      const newTotal: number = billsStore.remainingBalance + inputAmount;
-      const newCard = { name: e.target.billName.value, amount: inputAmount };
+      const amountAsNum: number = parseInt(billAmount);
+      const newTotal: number = billsStore.remainingBalance + amountAsNum;
+      const newCard = { name: billName, amount: amountAsNum };
       const updatedBillsList = [...billsStore.billsList, newCard];
       return { ...billsStore, remainingBalance: newTotal, billsList: updatedBillsList };
     });
@@ -14,9 +18,18 @@
 </script>
 
 <form on:submit|preventDefault={handleSubmit}>
-  <label for="billName">Bill Name</label><br />
-  <input type="text" id="billName" name="billName" value="Mastercard" /><br />
-  <label for="billAmount">Remaining Balance</label><br />
-  <input type="text" id="billAmount" name="billAmount" value={45} /><br /><br />
-  <input type="submit" value="Submit" />
+  <Card style="max-width:300px;">
+    <CardText>
+      <TextField dense filled bind:value={billName}>Bill Name</TextField>
+    </CardText>
+    <CardText>
+      <TextField dense filled bind:value={billAmount}>Bill Amount</TextField>
+    </CardText>
+    <CardActions>
+      <Button type="submit" small block class="light-blue lighten-3">Submit</Button>
+    </CardActions>
+  </Card>
 </form>
+
+<style type="text/scss">
+</style>
